@@ -25,7 +25,7 @@ import com.ashish.feeds.utils.CodeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.View {
+public class MainActivity extends AppCompatActivity implements MainPresenter.View, SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout srlContainer;
 
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     private void initComponent() {
         // init refresh layout for refreshing list
         srlContainer = findViewById(R.id.srl_container);
+        srlContainer.setOnRefreshListener(this);
 
         // init recycler for feeds
         feedsAdapter = new FeedsAdapter(feeds);
@@ -100,19 +101,10 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 srlContainer.setRefreshing(true);
+                mainPresenter.getFeedsDataFromServer();
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void resetUpdating() {
-        // Get our refresh item from the menu
-        MenuItem m = mymenu.findItem(R.id.action_refresh);
-        if (m.getActionView() != null) {
-            // Remove the animation.
-            m.getActionView().clearAnimation();
-            m.setActionView(null);
-        }
     }
 
     @Override
@@ -134,4 +126,8 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         feedsAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onRefresh() {
+        mainPresenter.getFeedsDataFromServer();
+    }
 }

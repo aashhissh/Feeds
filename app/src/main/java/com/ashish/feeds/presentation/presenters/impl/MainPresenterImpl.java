@@ -31,7 +31,8 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
         getFeedsDataFromServer();
     }
 
-    private void getFeedsDataFromServer() {
+    @Override
+    public void getFeedsDataFromServer() {
         if (mView.isConnectedToInternet()) {
             mView.showProgress();
             GetFeedsInteractor getFeedsInteractor = new GetFeedsInteractorImpl(

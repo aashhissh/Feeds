@@ -16,4 +16,6 @@ public interface MainPresenter extends BasePresenter {
         void updateFeedsList(List<FeedModel> feeds);
     }
 
+    void getFeedsDataFromServer();
+
 }
