@@ -6,9 +6,11 @@ import com.ashish.feeds.presentation.ui.BaseView;
 public interface MainPresenter extends BasePresenter {
 
     interface View extends BaseView {
-        // TODO: Add your view methods
-    }
+        boolean isConnectedToInternet();
 
-    // TODO: Add your presenter methods
+        void setTitle(String title);
+
+        void renderFeeds();
+    }
 
 }

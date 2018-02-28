@@ -2,15 +2,17 @@ package com.ashish.feeds.presentation.presenters.impl;
 
 import com.ashish.feeds.domain.executor.Executor;
 import com.ashish.feeds.domain.executor.MainThread;
-import com.ashish.feeds.domain.interactors.SampleInteractor;
+import com.ashish.feeds.domain.interactors.GetFeedsInteractor;
+import com.ashish.feeds.domain.interactors.impl.GetFeedsInteractorImpl;
 import com.ashish.feeds.presentation.presenters.MainPresenter;
 import com.ashish.feeds.presentation.presenters.base.AbstractPresenter;
 
 /**
- * Created by dmilicic on 12/13/15.
+ * @author ashish
+ * @since 28/02/18
  */
 public class MainPresenterImpl extends AbstractPresenter implements MainPresenter,
-        SampleInteractor.Callback {
+        GetFeedsInteractor.Callback {
 
     private MainPresenter.View mView;
 
@@ -23,12 +25,21 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void resume() {
-        mView.showProgress();
         getFeedsDataFromServer();
     }
 
     private void getFeedsDataFromServer() {
-
+        if (mView.isConnectedToInternet()) {
+            mView.showProgress();
+            GetFeedsInteractor getFeedsInteractor = new GetFeedsInteractorImpl(
+                    mExecutor,
+                    mMainThread,
+                    this
+            );
+            getFeedsInteractor.execute();
+        } else {
+            mView.showError("Please check you internet connection");
+        }
     }
 
     @Override
@@ -48,6 +59,7 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void onError(String message) {
-
+        mView.hideProgress();
+        mView.showError(message);
     }
 }

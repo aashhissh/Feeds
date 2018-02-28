@@ -13,7 +13,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.ashish.feeds.R;
+import com.ashish.feeds.domain.executor.impl.ThreadExecutor;
 import com.ashish.feeds.presentation.presenters.MainPresenter;
+import com.ashish.feeds.presentation.presenters.impl.MainPresenterImpl;
+import com.ashish.feeds.threading.MainThreadImpl;
+import com.ashish.feeds.utils.CodeUtil;
 
 public class MainActivity extends AppCompatActivity implements MainPresenter.View {
 
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     private SwipeRefreshLayout srlContainer;
 
     private Menu mymenu;
+    private MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,17 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     }
 
     private void init() {
+        mainPresenter = new MainPresenterImpl(
+                ThreadExecutor.getInstance(),
+                MainThreadImpl.getInstance(),
+                this
+        );
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainPresenter.resume();
     }
 
     @Override
@@ -50,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void hideProgress() {
-
+        srlContainer.setRefreshing(false);
     }
 
     @Override
@@ -66,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         // We should save our menu so we can use it to reset our updater.
         mymenu = menu;
 
-        //
         return true;
     }
 
@@ -88,5 +102,10 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
             m.getActionView().clearAnimation();
             m.setActionView(null);
         }
+    }
+
+    @Override
+    public boolean isConnectedToInternet() {
+        return CodeUtil.isConnectedToInternet(this);
     }
 }
