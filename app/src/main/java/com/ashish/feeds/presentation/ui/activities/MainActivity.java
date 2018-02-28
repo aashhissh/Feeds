@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,18 +15,24 @@ import android.widget.ImageView;
 
 import com.ashish.feeds.R;
 import com.ashish.feeds.domain.executor.impl.ThreadExecutor;
+import com.ashish.feeds.presentation.models.FeedModel;
 import com.ashish.feeds.presentation.presenters.MainPresenter;
 import com.ashish.feeds.presentation.presenters.impl.MainPresenterImpl;
+import com.ashish.feeds.presentation.ui.adapters.FeedsAdapter;
 import com.ashish.feeds.threading.MainThreadImpl;
 import com.ashish.feeds.utils.CodeUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements MainPresenter.View {
 
-    private RecyclerView rvFeeds;
     private SwipeRefreshLayout srlContainer;
 
     private Menu mymenu;
     private MainPresenter mainPresenter;
+    private FeedsAdapter feedsAdapter;
+    private ArrayList<FeedModel> feeds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,11 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         srlContainer = findViewById(R.id.srl_container);
 
         // init recycler for feeds
-        rvFeeds = findViewById(R.id.rv_feeds);
+        feedsAdapter = new FeedsAdapter(feeds);
+
+        RecyclerView rvFeeds = findViewById(R.id.rv_feeds);
+        rvFeeds.setLayoutManager(new LinearLayoutManager(this));
+        rvFeeds.setAdapter(feedsAdapter);
     }
 
     private void init() {
@@ -110,12 +121,17 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     }
 
     @Override
-    public void setTitle(String title) {
-
+    public void updateTitle(String title) {
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     @Override
-    public void renderFeeds() {
-
+    public void updateFeedsList(List<FeedModel> feeds) {
+        this.feeds.clear();
+        this.feeds.addAll(feeds);
+        feedsAdapter.notifyDataSetChanged();
     }
+
 }
