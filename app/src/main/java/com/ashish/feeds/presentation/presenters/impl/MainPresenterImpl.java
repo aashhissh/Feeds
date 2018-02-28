@@ -23,6 +23,11 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void resume() {
+        mView.showProgress();
+        getFeedsDataFromServer();
+    }
+
+    private void getFeedsDataFromServer() {
 
     }
 
