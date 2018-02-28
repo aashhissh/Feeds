@@ -38,12 +38,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         FeedModel feed = feeds.get(holder.getAdapterPosition());
 
-        holder.tvTitle.setText(feed.getTitle());
-        holder.tvDescription.setText(feed.getDescription());
+        CodeUtil.setOrHideText(feed.getTitle(), holder.tvTitle);
+        CodeUtil.setOrHideText(feed.getDescription(), holder.tvDescription);
         if(!CodeUtil.isEmpty(feed.getImageUrl())) {
+            holder.ivFeedImage.setVisibility(View.VISIBLE);
             holder.ivFeedImage.setImageURI(Uri.parse(feed.getImageUrl()));
         } else {
-            holder.ivFeedImage.setImageURI(null);
+            holder.ivFeedImage.setVisibility(View.GONE);
         }
     }
 

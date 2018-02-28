@@ -6,6 +6,8 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -51,6 +53,15 @@ public class CodeUtil {
             }
         }
         return false;
+    }
+
+    public static void setOrHideText(String text, TextView textView) {
+        if(isEmpty(text)) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(text);
+        }
     }
 
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CachedImageView">
+        <attr name="effects" format="enum">
+            <enum name="no_effect" value="0" />
+            <enum name="circular" value="1" />
+            <enum name="cornered" value="2" />
+        </attr>
+        <attr name="square" format="enum">
+            <enum name="none" value="0" />
+            <enum name="fixed_width" value="1" />
+            <enum name="fixed_height" value="2" />
+        </attr>
+        <!-- Range from 0.0 - 1.0 -->
+        <attr name="overlay" format="float" />
+        <attr name="caching" format="enum">
+            <enum name="NONE" value="0" />
+            <!-- SOURCE is by default -->
+            <enum name="SOURCE" value="1" />
+            <enum name="DESTINATION" value="2" />
+            <enum name="ALL" value="3" />
+        </attr>
+        <attr name="corner_radius" format="dimension" />
+        <attr name="corner_margin" format="dimension" />
+        <attr name="place_holder" format="reference" />
+        <attr name="thumbnail" format="boolean" />
+        <attr name="animation" format="reference" />
+        <attr name="source" format="reference" />
+    </declare-styleable>
+</resources>
