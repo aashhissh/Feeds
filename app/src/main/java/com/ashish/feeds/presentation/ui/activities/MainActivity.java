@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -27,14 +28,16 @@ import com.ashish.feeds.utils.CodeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.View, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements MainPresenter.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     private SwipeRefreshLayout srlContainer;
+    private View vError;
 
     private MainPresenter mainPresenter;
     private FeedsAdapter feedsAdapter;
     private ArrayList<FeedModel> feeds = new ArrayList<>();
     private boolean doubleBackToExitPressedOnce;
+    private RecyclerView rvFeeds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,14 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         srlContainer = findViewById(R.id.srl_container);
         srlContainer.setOnRefreshListener(this);
 
+        //init error view
+        vError = findViewById(R.id.error_view);
+        vError.setOnClickListener(this);
+
         // init recycler for feeds
         feedsAdapter = new FeedsAdapter(feeds);
 
-        RecyclerView rvFeeds = findViewById(R.id.rv_feeds);
+        rvFeeds = findViewById(R.id.rv_feeds);
         rvFeeds.setLayoutManager(new LinearLayoutManager(this));
         rvFeeds.setAdapter(feedsAdapter);
     }
@@ -84,7 +91,9 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void showError(String message) {
-
+        CodeUtil.showToast(this, message);
+        vError.setVisibility(View.VISIBLE);
+        rvFeeds.setVisibility(View.GONE);
     }
 
     @Override
@@ -119,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void updateFeedsList(List<FeedModel> feeds) {
+        vError.setVisibility(View.GONE);
+        rvFeeds.setVisibility(View.VISIBLE);
         this.feeds.clear();
         this.feeds.addAll(feeds);
         feedsAdapter.notifyDataSetChanged();
@@ -146,5 +157,15 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.error_view:
+                vError.setVisibility(View.GONE);
+                mainPresenter.getFeedsDataFromServer();
+                break;
+        }
     }
 }
