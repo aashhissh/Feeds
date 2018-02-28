@@ -2,6 +2,7 @@ package com.ashish.feeds.presentation.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ashish.feeds.R;
 import com.ashish.feeds.domain.executor.impl.ThreadExecutor;
@@ -29,10 +31,10 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     private SwipeRefreshLayout srlContainer;
 
-    private Menu mymenu;
     private MainPresenter mainPresenter;
     private FeedsAdapter feedsAdapter;
     private ArrayList<FeedModel> feeds = new ArrayList<>();
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +91,6 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     public boolean onCreateOptionsMenu(Menu menu) {
         // Add our menu
         getMenuInflater().inflate(R.menu.main, menu);
-
-        // We should save our menu so we can use it to reset our updater.
-        mymenu = menu;
-
         return true;
     }
 
@@ -129,5 +127,24 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     @Override
     public void onRefresh() {
         mainPresenter.getFeedsDataFromServer();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }
