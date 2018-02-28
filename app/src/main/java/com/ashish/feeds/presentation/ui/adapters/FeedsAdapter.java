@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ashish.feeds.R;
 import com.ashish.feeds.presentation.models.FeedModel;
+import com.ashish.feeds.presentation.ui.custom_views.image_view.CachedImageView;
 import com.ashish.feeds.utils.CodeUtil;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         CodeUtil.setOrHideText(feed.getDescription(), holder.tvDescription);
         if(!CodeUtil.isEmpty(feed.getImageUrl())) {
             holder.ivFeedImage.setVisibility(View.VISIBLE);
-            holder.ivFeedImage.setImageURI(Uri.parse(feed.getImageUrl()));
+            holder.ivFeedImage.setUri(feed.getImageUrl());
         } else {
             holder.ivFeedImage.setVisibility(View.GONE);
         }
@@ -56,7 +57,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvTitle, tvDescription;
-        private ImageView ivFeedImage;
+        private CachedImageView ivFeedImage;
 
         public ViewHolder(View itemView) {
             super(itemView);

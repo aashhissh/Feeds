@@ -1,4 +1,4 @@
-package com.ashish.feeds.presentation.custom.image_view;
+package com.ashish.feeds.presentation.ui.custom_views.image_view;
 
 import android.content.Context;
 

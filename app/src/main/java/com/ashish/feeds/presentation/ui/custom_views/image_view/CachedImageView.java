@@ -1,4 +1,4 @@
-package com.ashish.feeds.presentation.custom.image_view;
+package com.ashish.feeds.presentation.ui.custom_views.image_view;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -17,7 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.request.RequestListener;
 
 import java.util.ArrayList;
 import java.util.List;
