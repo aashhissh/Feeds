@@ -1,6 +1,7 @@
 package com.ashish.feeds.domain.interactors;
 
 import com.ashish.feeds.domain.interactors.base.Interactor;
+import com.ashish.feeds.network.response.TimeLineResponseModel;
 
 /**
  * @author ashish
@@ -9,7 +10,9 @@ import com.ashish.feeds.domain.interactors.base.Interactor;
 public interface GetFeedsInteractor extends Interactor {
 
     interface Callback {
+        void onError(String message);
 
+        void onSuccess(TimeLineResponseModel timeLineResponseModel);
     }
 
 }

@@ -4,6 +4,7 @@ import com.ashish.feeds.domain.executor.Executor;
 import com.ashish.feeds.domain.executor.MainThread;
 import com.ashish.feeds.domain.interactors.GetFeedsInteractor;
 import com.ashish.feeds.domain.interactors.impl.GetFeedsInteractorImpl;
+import com.ashish.feeds.network.response.TimeLineResponseModel;
 import com.ashish.feeds.presentation.presenters.MainPresenter;
 import com.ashish.feeds.presentation.presenters.base.AbstractPresenter;
 
@@ -61,5 +62,10 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     public void onError(String message) {
         mView.hideProgress();
         mView.showError(message);
+    }
+
+    @Override
+    public void onSuccess(TimeLineResponseModel timeLineResponseModel) {
+        mView.hideProgress();
     }
 }

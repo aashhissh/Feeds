@@ -108,4 +108,14 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     public boolean isConnectedToInternet() {
         return CodeUtil.isConnectedToInternet(this);
     }
+
+    @Override
+    public void setTitle(String title) {
+
+    }
+
+    @Override
+    public void renderFeeds() {
+
+    }
 }

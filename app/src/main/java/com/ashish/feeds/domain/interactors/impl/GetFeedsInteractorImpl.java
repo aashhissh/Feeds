@@ -4,6 +4,12 @@ import com.ashish.feeds.domain.executor.Executor;
 import com.ashish.feeds.domain.executor.MainThread;
 import com.ashish.feeds.domain.interactors.GetFeedsInteractor;
 import com.ashish.feeds.domain.interactors.base.AbstractInteractor;
+import com.ashish.feeds.network.RestClient;
+import com.ashish.feeds.network.response.FeedResponseModel;
+import com.ashish.feeds.network.response.TimeLineResponseModel;
+import com.ashish.feeds.network.service.SyncService;
+
+import java.io.IOException;
 
 /**
  * @author ashish
@@ -25,6 +31,30 @@ public class GetFeedsInteractorImpl extends AbstractInteractor implements GetFee
 
     @Override
     public void run() {
+        // initializing the REST service we will use
+        SyncService syncService = RestClient.getService(SyncService.class);
 
+        try {
+            final TimeLineResponseModel timeLineResponseModel = syncService.fetchFeeds().execute().body();
+
+            if(timeLineResponseModel != null) {
+                mMainThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onSuccess(timeLineResponseModel);
+                    }
+                });
+            } else {
+                mMainThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onError("Something went wrong !!!");
+                    }
+                });
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
