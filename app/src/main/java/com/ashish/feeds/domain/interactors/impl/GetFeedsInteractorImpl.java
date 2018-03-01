@@ -8,6 +8,7 @@ import com.ashish.feeds.network.RestClient;
 import com.ashish.feeds.network.response.FeedResponseModel;
 import com.ashish.feeds.network.response.TimeLineResponseModel;
 import com.ashish.feeds.network.service.SyncService;
+import com.ashish.feeds.presentation.converters.ResponseModelConverter;
 
 import java.io.IOException;
 
@@ -41,7 +42,11 @@ public class GetFeedsInteractorImpl extends AbstractInteractor implements GetFee
                 mMainThread.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onSuccess(timeLineResponseModel);
+                        callback.onSuccess(
+                                ResponseModelConverter.convertToTimeLineModel(
+                                        timeLineResponseModel
+                                )
+                        );
                     }
                 });
             } else {

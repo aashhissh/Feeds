@@ -68,8 +68,7 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     }
 
     @Override
-    public void onSuccess(TimeLineResponseModel timeLineResponseModel) {
-        TimeLineModel timeLineModel = ResponseModelConverter.convertToTimeLineModel(timeLineResponseModel);
+    public void onSuccess(TimeLineModel timeLineModel) {
         mView.hideProgress();
         mView.updateTitle(timeLineModel.getTitle());
         mView.updateFeedsList(timeLineModel.getFeeds());
