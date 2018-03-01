@@ -1,5 +1,7 @@
 package com.ashish.feeds.domain.interactors.impl;
 
+import android.support.annotation.NonNull;
+
 import com.ashish.feeds.domain.executor.Executor;
 import com.ashish.feeds.domain.executor.MainThread;
 import com.ashish.feeds.domain.interactors.GetFeedsInteractor;
@@ -23,9 +25,21 @@ public class GetFeedsInteractorImpl extends AbstractInteractor implements GetFee
     public GetFeedsInteractorImpl(Executor threadExecutor, MainThread mainThread, Callback callback) {
         super(threadExecutor, mainThread);
 
-        if(callback == null) {
+        if (callback == null) {
             throw new IllegalArgumentException("Arguments can not be null!");
         }
+
+        this.callback = callback;
+    }
+
+    public GetFeedsInteractorImpl(Executor threadExecutor, MainThread mainThread) {
+        super(threadExecutor, mainThread);
+    }
+
+    @Override
+    public void setCallback(Callback callback) {
+        if (callback == null)
+            throw new IllegalArgumentException("wtf bro");
 
         this.callback = callback;
     }
@@ -38,7 +52,7 @@ public class GetFeedsInteractorImpl extends AbstractInteractor implements GetFee
         try {
             final TimeLineResponseModel timeLineResponseModel = syncService.fetchFeeds().execute().body();
 
-            if(timeLineResponseModel != null) {
+            if (timeLineResponseModel != null) {
                 mMainThread.post(new Runnable() {
                     @Override
                     public void run() {

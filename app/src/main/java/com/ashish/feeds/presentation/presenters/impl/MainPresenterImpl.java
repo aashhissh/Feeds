@@ -14,16 +14,18 @@ import com.ashish.feeds.presentation.presenters.base.AbstractPresenter;
  * @author ashish
  * @since 28/02/18
  */
-public class MainPresenterImpl extends AbstractPresenter implements MainPresenter,
-        GetFeedsInteractor.Callback {
+public class MainPresenterImpl extends AbstractPresenter implements MainPresenter, GetFeedsInteractor.Callback {
 
     private MainPresenter.View mView;
+    private GetFeedsInteractor getFeedsInteractor;
 
     public MainPresenterImpl(Executor executor,
                              MainThread mainThread,
-                             View view) {
+                             View view,
+                             GetFeedsInteractor getFeedsInteractor) {
         super(executor, mainThread);
         mView = view;
+        this.getFeedsInteractor = getFeedsInteractor;
     }
 
     @Override
@@ -34,11 +36,7 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     @Override
     public void getFeedsDataFromServer() {
         mView.showProgress();
-        GetFeedsInteractor getFeedsInteractor = new GetFeedsInteractorImpl(
-                mExecutor,
-                mMainThread,
-                this
-        );
+        this.getFeedsInteractor.setCallback(this);
         getFeedsInteractor.execute();
     }
 

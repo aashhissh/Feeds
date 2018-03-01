@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.ashish.feeds.R;
 import com.ashish.feeds.domain.executor.impl.ThreadExecutor;
+import com.ashish.feeds.domain.interactors.impl.GetFeedsInteractorImpl;
 import com.ashish.feeds.presentation.models.FeedModel;
 import com.ashish.feeds.presentation.presenters.MainPresenter;
 import com.ashish.feeds.presentation.presenters.impl.MainPresenterImpl;
@@ -69,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         mainPresenter = new MainPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(),
-                this
+                this,
+                new GetFeedsInteractorImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance())
         );
     }
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void updateTitle(String title) {
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
     }
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     }
 
     private void getFeedsDataFromServer() {
-        if(CodeUtil.isConnectedToInternet(this)) {
+        if (CodeUtil.isConnectedToInternet(this)) {
             mainPresenter.getFeedsDataFromServer();
         } else {
             showError(getString(R.string.no_internet));

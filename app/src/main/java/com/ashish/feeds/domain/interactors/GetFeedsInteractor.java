@@ -16,4 +16,6 @@ public interface GetFeedsInteractor extends Interactor {
         void onSuccess(TimeLineModel timeLineModel);
     }
 
+    void setCallback(Callback callback);
+
 }
