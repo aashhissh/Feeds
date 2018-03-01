@@ -4,4 +4,5 @@
     <string name="error_view_oops">Yikes!</string>
     <string name="ooopss">Oops! Something went wrong</string>
     <string name="tap_to_refresh">Tap to refresh</string>
+    <string name="no_internet">Please check your internet connection</string>
 </resources>

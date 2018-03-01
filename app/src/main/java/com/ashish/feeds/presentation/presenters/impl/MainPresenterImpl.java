@@ -33,17 +33,13 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void getFeedsDataFromServer() {
-        if (mView.isConnectedToInternet()) {
-            mView.showProgress();
-            GetFeedsInteractor getFeedsInteractor = new GetFeedsInteractorImpl(
-                    mExecutor,
-                    mMainThread,
-                    this
-            );
-            getFeedsInteractor.execute();
-        } else {
-            mView.showError("Please check you internet connection");
-        }
+        mView.showProgress();
+        GetFeedsInteractor getFeedsInteractor = new GetFeedsInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this
+        );
+        getFeedsInteractor.execute();
     }
 
     @Override

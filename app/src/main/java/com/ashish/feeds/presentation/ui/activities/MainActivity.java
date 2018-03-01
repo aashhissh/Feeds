@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     @Override
     protected void onResume() {
         super.onResume();
-        mainPresenter.resume();
+        getFeedsDataFromServer();
     }
 
     @Override
@@ -107,8 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                srlContainer.setRefreshing(true);
-                mainPresenter.getFeedsDataFromServer();
+                getFeedsDataFromServer();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void onRefresh() {
-        mainPresenter.getFeedsDataFromServer();
+        getFeedsDataFromServer();
     }
 
     @Override
@@ -164,8 +163,16 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         switch (v.getId()) {
             case R.id.error_view:
                 vError.setVisibility(View.GONE);
-                mainPresenter.getFeedsDataFromServer();
+                getFeedsDataFromServer();
                 break;
+        }
+    }
+
+    private void getFeedsDataFromServer() {
+        if(CodeUtil.isConnectedToInternet(this)) {
+            mainPresenter.getFeedsDataFromServer();
+        } else {
+            showError(getString(R.string.no_internet));
         }
     }
 }
